@@ -1,7 +1,7 @@
 # Vista Japan 🇯🇵
 Vista Japan is a modern iOS travel companion designed to provide a high-fidelity, interactive exploration of Tokyo's landmarks. Built with SwiftUI and MapKit, the app leverages realistic 3D terrain and precise camera controls to offer a seamless user experience.
 
-🚀 Key Features
+# 🚀 Key Features
 Realistic 3D Exploration: Utilizes .realistic elevation and pitch-ready camera angles to showcase Tokyo’s architecture and terrain.
 
 Dynamic Zoom Controls: Custom implementation of zoom logic that maintains the user's current center coordinate while adjusting the camera distance smoothly.
@@ -12,7 +12,7 @@ Landmark Integration: Interactive map markers with integrated SFSafariViewContro
 
 One-Touch Recenter: A spring-animated recentering feature that instantly restores the view to Tokyo Station with a 60° 3D tilt.
 
-🛠 Tech Stack
+# 🛠 Tech Stack
 Language: Swift
 
 Framework: SwiftUI
@@ -21,5 +21,5 @@ APIs: MapKit, SafariServices
 
 Version Control: Git / GitHub Desktop
 
-📸 Preview
+# 📸 Preview
 This project follows best practices for professional iOS development, including a curated .gitignore to ensure repository cleanliness and efficient build management.
