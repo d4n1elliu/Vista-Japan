@@ -35,6 +35,7 @@ struct ContentView: View {
             position = .camera(context.camera)
         }
         
+        // Map Control
         .mapControls {
             MapPitchToggle()
             MapCompass().mapControlVisibility(.hidden)
