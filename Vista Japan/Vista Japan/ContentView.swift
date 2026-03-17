@@ -47,6 +47,7 @@ struct ContentView: View {
                 showWebView = true
             }
         }
+        // Added wikipedia article
         .sheet(isPresented: $showWebView, onDismiss: { selectedMarkerID = nil }) {
             SafariView(url: URL(string: "https://en.wikipedia.org/wiki/Tokyo_Station")!)
                 .presentationDetents([.medium, .large])
