@@ -10,7 +10,7 @@ import MapKit
 import SafariServices
 
 struct ContentView: View {
-    // 1. Initial State
+    // 1. Initial Start (Tokyo Station)
     private let tokyoStation = CLLocationCoordinate2D(latitude: 35.6812, longitude: 139.7671)
     
     @State private var position: MapCameraPosition = .camera(
@@ -19,7 +19,8 @@ struct ContentView: View {
     
     @State private var selectedMarkerID: Int?
     @State private var showWebView = false
-
+    
+    
     var body: some View {
         Map(position: $position, selection: $selectedMarkerID) {
             // Adding the tag(1) makes the marker "selectable"
@@ -27,15 +28,15 @@ struct ContentView: View {
                 .tag(1)
                 .tint(.red)
         }
-        // Realistic 3D buildings and terrain
+        // Generating realistic 3D buildings and terrain
         .mapStyle(.standard(elevation: .realistic))
         
-        // --- CRITICAL FIX: Keeps camera synced during pans ---
+        // Keeps camera synced during pans
         .onMapCameraChange { context in
             position = .camera(context.camera)
         }
         
-        // Map Control
+        // Map Control (Zoom in/ Zoom out)
         .mapControls {
             MapPitchToggle()
             MapCompass().mapControlVisibility(.hidden)
