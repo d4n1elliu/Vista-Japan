@@ -20,7 +20,6 @@ struct ContentView: View {
     @State private var selectedMarkerID: Int?
     @State private var showWebView = false
     
-    
     var body: some View {
         Map(position: $position, selection: $selectedMarkerID) {
             // Adding the tag(1) makes the marker "selectable"
@@ -48,7 +47,7 @@ struct ContentView: View {
                 showWebView = true
             }
         }
-        // Added wikipedia article
+        // Import wikipedia article
         .sheet(isPresented: $showWebView, onDismiss: { selectedMarkerID = nil }) {
             SafariView(url: URL(string: "https://en.wikipedia.org/wiki/Tokyo_Station")!)
                 .presentationDetents([.medium, .large])
@@ -78,7 +77,7 @@ struct ContentView: View {
 
                 Spacer()
                 
-                // Recenter Button
+                // Button Recenter
                 Button {
                     withAnimation(.spring()) {
                         position = .camera(
