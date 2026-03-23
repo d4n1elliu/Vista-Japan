@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 import Combine
 
-// MARK: - View Model
+// Location View Model
 class LocationViewModel: ObservableObject {
     @Published var fetchedLocation: PlaceData?
     @Published var isLoading = false

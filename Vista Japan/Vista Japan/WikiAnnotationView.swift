@@ -10,7 +10,7 @@ import SwiftUI
 import MapKit
 import Combine
 
-// MARK: - Helper Views
+// Link URL for opening wikiepedia annotation view 
 
 struct WikiAnnotationView: View {
     let imageURL: String?

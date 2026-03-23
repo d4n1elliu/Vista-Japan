@@ -8,7 +8,7 @@
 import SwiftUI
 import MapKit
 
-// MARK: - Main View
+// Main App View
 struct ContentView: View {
     @StateObject private var viewModel = LocationViewModel()
     

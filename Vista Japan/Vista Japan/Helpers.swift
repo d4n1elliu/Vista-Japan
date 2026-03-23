@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-// Generic circular image component for icons and placeholders
+// Circular image component for icons and placeholders
 struct CircleImage: View {
     var body: some View {
         Image(systemName: "mappin.circle.fill")

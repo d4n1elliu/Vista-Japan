@@ -9,7 +9,7 @@ import SwiftUI
 import MapKit
 
 struct MapControlsView: View {
-    // These Bindings allow this file to talk back to ContentView
+    // Map control for redirecting back to original viewpoint
     @Binding var position: MapCameraPosition
     @Binding var is3D: Bool
     let tokyoStation: CLLocationCoordinate2D
@@ -62,7 +62,7 @@ struct MapControlsView: View {
         }
     }
 
-    // Logic moved from ContentView
+    // Allow toggle on and off for viewing perspective 
     private func togglePerspective() {
         is3D.toggle()
         if let camera = position.camera {
@@ -78,7 +78,8 @@ struct MapControlsView: View {
             }
         }
     }
-
+    
+    // Zoom in and out feature
     private func zoom(by factor: Double) {
         if let camera = position.camera {
             withAnimation(.easeInOut) {
