@@ -10,60 +10,55 @@ import SwiftUI
 import MapKit
 import Combine
 
-// Location View Model
 class LocationViewModel: ObservableObject {
     @Published var fetchedLocation: PlaceData?
     @Published var isLoading = false
-    private let geocoder = CLGeocoder()
+    
+    private var activeSearch: MKLocalSearch?
 
     struct PlaceData {
         let name: String
         let coordinate: CLLocationCoordinate2D
-        let imageURL: String?
-        let wikiURL: URL
+        let imageURL: String? // Add this back as an optional
+        let googleMapsURL: URL
     }
 
     func fetchWikiData(for coordinate: CLLocationCoordinate2D) {
         isLoading = true
-        let location = CLLocation(latitude: coordinate.latitude, longitude: coordinate.longitude)
+        activeSearch?.cancel()
         
-        geocoder.reverseGeocodeLocation(location) { placemarks, _ in
-            guard let place = placemarks?.first,
-                  let name = place.name ?? place.locality ?? place.administrativeArea else {
-                DispatchQueue.main.async { self.isLoading = false }
-                return
-            }
+        let request = MKLocalSearch.Request()
+        request.pointOfInterestFilter = .includingAll
+        request.region = MKCoordinateRegion(
+            center: coordinate,
+            latitudinalMeters: 50,
+            longitudinalMeters: 50
+        )
+        
+        activeSearch = MKLocalSearch(request: request)
+        activeSearch?.start { [weak self] response, error in
+            guard let self = self else { return }
+            defer { DispatchQueue.main.async { self.isLoading = false } }
             
-            let query = name.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-            let urlString = "https://en.wikipedia.org/w/api.php?action=query&prop=pageimages&format=json&piprop=original|thumbnail&pithumbsize=500&titles=\(query)&redirects=1"
+            guard let item = response?.mapItems.first else { return }
+            
+            let name = item.name ?? item.placemark.name ?? "Dropped Pin"
+            
+            // Format for Google Maps Universal Link
+            let lat = coordinate.latitude
+            let lon = coordinate.longitude
+            let urlString = "https://www.google.com/maps/search/?api=1&query=\(lat),\(lon)"
             
             guard let url = URL(string: urlString) else { return }
             
-            URLSession.shared.dataTask(with: url) { data, _, _ in
-                defer { DispatchQueue.main.async { self.isLoading = false } }
-                
-                guard let data = data,
-                      let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
-                      let queryNode = json["query"] as? [String: Any],
-                      let pages = queryNode["pages"] as? [String: Any],
-                      let firstPage = pages.values.first as? [String: Any] else { return }
-                
-                let original = firstPage["original"] as? [String: Any]
-                let thumbnail = firstPage["thumbnail"] as? [String: Any]
-                let imageSource = (original?["source"] as? String) ?? (thumbnail?["source"] as? String)
-                
-                let wikiPageURL = URL(string: "https://en.wikipedia.org/wiki/\(query)")!
-                
-                DispatchQueue.main.async {
-                    self.fetchedLocation = PlaceData(
-                        name: name,
-                        coordinate: coordinate,
-                        imageURL: imageSource,
-                        wikiURL: wikiPageURL
-                    )
-                }
-            }.resume()
+            DispatchQueue.main.async {
+                self.fetchedLocation = PlaceData(
+                    name: name,
+                    coordinate: coordinate,
+                    imageURL: nil, // Default to nil for now
+                    googleMapsURL: url
+                )
+            }
         }
     }
 }
- 

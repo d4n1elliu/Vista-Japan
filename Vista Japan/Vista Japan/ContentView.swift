@@ -68,9 +68,10 @@ struct ContentView: View {
                 tokyoStation: tokyoStation
             )
         }
+        // Replace your current .sheet block with this
         .sheet(isPresented: $showWebView) {
-            if let url = viewModel.fetchedLocation?.wikiURL {
-                SafariView(url: url)
+            if let location = viewModel.fetchedLocation {
+                SafariView(url: location.googleMapsURL)
                     .presentationDetents([.medium, .large])
             }
         }
